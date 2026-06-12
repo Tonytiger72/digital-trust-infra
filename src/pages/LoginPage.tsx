@@ -3,8 +3,7 @@ import { useAuth } from '@/context/AuthContext'
 import { Flame, Shield, CheckCircle2, Users, Building2, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-// Replace with: import cidiLogo from '@/assets/cidi-logo.png'
-const CIDI_LOGO_PATH = '/cidi-logo.png'
+import cidiLogo from '@/assets/cidi-logo.jpeg'
 
 const features = [
   {
@@ -261,24 +260,12 @@ export function LoginPage() {
 }
 
 function CidiLogoImg() {
-  const [hasError, setHasError] = useState(false)
-
-  if (hasError) return <CidiPlaceholder />
-
   return (
     <img
-      src={CIDI_LOGO_PATH}
+      src={cidiLogo}
       alt="CIDI Córdoba"
       className="w-6 h-6 object-contain shrink-0"
-      onError={() => setHasError(true)}
     />
   )
 }
 
-function CidiPlaceholder() {
-  return (
-    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E86C1] to-[#D4AC0D] shrink-0 flex items-center justify-center">
-      <span className="text-white text-[9px] font-bold">CI</span>
-    </div>
-  )
-}
