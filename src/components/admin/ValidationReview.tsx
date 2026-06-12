@@ -22,7 +22,7 @@ export function ValidationReview({ onBack, onToast }: Props) {
   const { selectedMilestoneId, milestones, updateMilestoneStatus } = useApp()
   const [checked, setChecked] = useState<Set<string>>(new Set())
 
-  const milestone = milestones.find(m => m.id === selectedMilestoneId)
+  const milestone = milestones.find(m => m.id === selectedMilestoneId)!
   if (!milestone) return null
 
   const project = projects.find(p => p.id === milestone.projectId)

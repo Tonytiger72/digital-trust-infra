@@ -8,10 +8,6 @@ import { ArrowLeft, Upload, CheckCircle2, Clock, AlertTriangle, Circle, MapPin, 
 import type { Milestone, MilestoneStatus } from '@/types'
 import { cn } from '@/lib/utils'
 
-const statusOrder: MilestoneStatus[] = [
-  'propuesto', 'evidencia_enviada', 'en_revision', 'validado', 'aceptado', 'disputado',
-]
-
 function statusDot(status: MilestoneStatus) {
   if (status === 'aceptado' || status === 'validado') return <CheckCircle2 className="w-5 h-5 text-green-500" />
   if (status === 'en_revision' || status === 'evidencia_enviada') return <Clock className="w-5 h-5 text-amber-500" />

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useApp } from '@/context/AppContext'
 import type { Role } from '@/types'
-import { Flame, ChevronDown, Building2, Shield, Landmark, User } from 'lucide-react'
+import { Flame, ChevronDown, Shield, Landmark, User } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
