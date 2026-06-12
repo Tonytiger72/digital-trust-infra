@@ -1,6 +1,25 @@
-import { createContext, useContext, useState, type ReactNode } from 'react'
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react'
 import type { Role, Milestone, MilestoneStatus } from '@/types'
 import { milestones as initialMilestones } from '@/data/milestones'
+
+const LS_MILESTONES = 'trustgas_milestones'
+const LS_ROLE = 'trustgas_role'
+
+function loadMilestones(): Milestone[] {
+  try {
+    const raw = localStorage.getItem(LS_MILESTONES)
+    if (raw) return JSON.parse(raw) as Milestone[]
+  } catch {}
+  return initialMilestones
+}
+
+function loadRole(): Role {
+  try {
+    const raw = localStorage.getItem(LS_ROLE)
+    if (raw) return raw as Role
+  } catch {}
+  return 'executor'
+}
 
 interface AppContextType {
   role: Role
@@ -11,15 +30,25 @@ interface AppContextType {
   setSelectedProjectId: (id: string | null) => void
   selectedMilestoneId: string | null
   setSelectedMilestoneId: (id: string | null) => void
+  resetDemo: () => void
 }
 
 const AppContext = createContext<AppContextType | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [role, setRole] = useState<Role>('executor')
-  const [milestones, setMilestones] = useState<Milestone[]>(initialMilestones)
+  const [role, setRoleState] = useState<Role>(loadRole)
+  const [milestones, setMilestones] = useState<Milestone[]>(loadMilestones)
   const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null)
   const [selectedMilestoneId, setSelectedMilestoneId] = useState<string | null>(null)
+
+  useEffect(() => {
+    localStorage.setItem(LS_MILESTONES, JSON.stringify(milestones))
+  }, [milestones])
+
+  function setRole(r: Role) {
+    setRoleState(r)
+    localStorage.setItem(LS_ROLE, r)
+  }
 
   function updateMilestoneStatus(milestoneId: string, status: MilestoneStatus) {
     setMilestones(prev =>
@@ -37,6 +66,15 @@ export function AppProvider({ children }: { children: ReactNode }) {
     )
   }
 
+  function resetDemo() {
+    localStorage.removeItem(LS_MILESTONES)
+    localStorage.removeItem(LS_ROLE)
+    setMilestones(initialMilestones)
+    setRoleState('executor')
+    setSelectedProjectId(null)
+    setSelectedMilestoneId(null)
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -48,6 +86,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         setSelectedProjectId,
         selectedMilestoneId,
         setSelectedMilestoneId,
+        resetDemo,
       }}
     >
       {children}

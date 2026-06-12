@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useApp } from '@/context/AppContext'
 import type { Role } from '@/types'
-import { Flame, ChevronDown, Shield, Landmark, User } from 'lucide-react'
+import { Flame, ChevronDown, Shield, Landmark, User, BookOpen } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -38,9 +38,10 @@ const roles: { value: Role; label: string; sublabel: string; icon: React.ReactNo
 
 interface Props {
   children: ReactNode
+  onOpenDemo: () => void
 }
 
-export function Shell({ children }: Props) {
+export function Shell({ children, onOpenDemo }: Props) {
   const { role, setRole, setSelectedProjectId, setSelectedMilestoneId } = useApp()
   const [open, setOpen] = useState(false)
 
@@ -67,6 +68,16 @@ export function Shell({ children }: Props) {
               <span className="text-[10px] text-blue-300 hidden sm:block">Infraestructura Digital — Monte Cristo</span>
             </div>
           </div>
+
+          <div className="flex items-center gap-2">
+          {/* Demo guide button */}
+          <button
+            onClick={onOpenDemo}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-blue-400/40 text-blue-200 text-xs font-medium hover:bg-white/10 transition-colors"
+          >
+            <BookOpen className="w-3.5 h-3.5" />
+            <span className="hidden sm:inline">Guía de demo</span>
+          </button>
 
           {/* Role switcher */}
           <div className="relative">
@@ -114,6 +125,7 @@ export function Shell({ children }: Props) {
                 </div>
               </>
             )}
+          </div>
           </div>
         </div>
       </header>
