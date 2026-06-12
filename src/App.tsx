@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { AppProvider, useApp } from '@/context/AppContext'
+import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { Shell } from '@/components/layout/Shell'
 import { DemoGuide } from '@/components/layout/DemoGuide'
+import { LoginPage } from '@/pages/LoginPage'
 import { ExecutorDashboard } from '@/components/executor/ExecutorDashboard'
 import { ProjectDetail } from '@/components/executor/ProjectDetail'
 import { AdminDashboard } from '@/components/admin/AdminDashboard'
@@ -11,9 +13,12 @@ import { CitizenDashboard } from '@/components/citizen/CitizenDashboard'
 import { ToastContainer, useToast } from '@/components/shared/Toast'
 
 function AppInner() {
+  const { isAuthenticated } = useAuth()
   const { role, selectedProjectId, setSelectedProjectId, selectedMilestoneId, setSelectedMilestoneId } = useApp()
   const { toasts, addToast, dismiss } = useToast()
   const [demoOpen, setDemoOpen] = useState(true)
+
+  if (!isAuthenticated) return <LoginPage />
 
   function toast(type: 'success' | 'error', msg: string) {
     addToast(type, msg)
@@ -52,8 +57,10 @@ function AppInner() {
 
 export default function App() {
   return (
-    <AppProvider>
-      <AppInner />
-    </AppProvider>
+    <AuthProvider>
+      <AppProvider>
+        <AppInner />
+      </AppProvider>
+    </AuthProvider>
   )
 }

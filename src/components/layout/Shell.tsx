@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react'
 import { useApp } from '@/context/AppContext'
+import { useAuth } from '@/context/AuthContext'
 import type { Role } from '@/types'
-import { Flame, ChevronDown, Shield, Landmark, User, BookOpen } from 'lucide-react'
+import { Flame, ChevronDown, Shield, Landmark, User, BookOpen, LogOut } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
 
@@ -43,6 +44,7 @@ interface Props {
 
 export function Shell({ children, onOpenDemo }: Props) {
   const { role, setRole, setSelectedProjectId, setSelectedMilestoneId } = useApp()
+  const { logout } = useAuth()
   const [open, setOpen] = useState(false)
 
   const current = roles.find(r => r.value === role)!
@@ -77,6 +79,13 @@ export function Shell({ children, onOpenDemo }: Props) {
           >
             <BookOpen className="w-3.5 h-3.5" />
             <span className="hidden sm:inline">Guía de demo</span>
+          </button>
+          <button
+            onClick={logout}
+            className="p-1.5 text-blue-300/60 hover:text-blue-200 transition-colors"
+            title="Cerrar sesión"
+          >
+            <LogOut className="w-4 h-4" />
           </button>
 
           {/* Role switcher */}
