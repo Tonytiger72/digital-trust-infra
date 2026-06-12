@@ -3,6 +3,7 @@ import { AppProvider, useApp } from '@/context/AppContext'
 import { AuthProvider, useAuth } from '@/context/AuthContext'
 import { Shell } from '@/components/layout/Shell'
 import { DemoGuide } from '@/components/layout/DemoGuide'
+import { GatePage } from '@/pages/GatePage'
 import { LoginPage } from '@/pages/LoginPage'
 import { ExecutorDashboard } from '@/components/executor/ExecutorDashboard'
 import { ProjectDetail } from '@/components/executor/ProjectDetail'
@@ -17,6 +18,16 @@ function AppInner() {
   const { role, selectedProjectId, setSelectedProjectId, selectedMilestoneId, setSelectedMilestoneId } = useApp()
   const { toasts, addToast, dismiss } = useToast()
   const [demoOpen, setDemoOpen] = useState(true)
+  const [gateUnlocked, setGateUnlocked] = useState(
+    () => sessionStorage.getItem('trustgas_gate') === '1'
+  )
+
+  if (!gateUnlocked) {
+    return <GatePage onUnlock={() => {
+      sessionStorage.setItem('trustgas_gate', '1')
+      setGateUnlocked(true)
+    }} />
+  }
 
   if (!isAuthenticated) return <LoginPage />
 
