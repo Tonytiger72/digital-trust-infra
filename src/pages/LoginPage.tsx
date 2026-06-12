@@ -3,6 +3,9 @@ import { useAuth } from '@/context/AuthContext'
 import { Flame, Shield, CheckCircle2, Users, Building2, Eye, EyeOff, ArrowRight, Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// Replace with: import cidiLogo from '@/assets/cidi-logo.png'
+const CIDI_LOGO_PATH = '/cidi-logo.png'
+
 const features = [
   {
     icon: <Shield className="w-5 h-5 text-blue-300" />,
@@ -64,12 +67,12 @@ export function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f2744] flex flex-col lg:flex-row overflow-hidden">
+    <div className="min-h-screen flex flex-col lg:flex-row overflow-hidden">
 
-      {/* ── Left panel — branding + pitch ── */}
+      {/* ── LEFT — deep navy blue ── */}
       <div
         className={cn(
-          'lg:w-3/5 flex flex-col justify-between px-8 py-10 lg:px-16 lg:py-14 transition-all duration-700',
+          'lg:w-3/5 bg-[#0f2744] flex flex-col justify-between px-8 py-10 lg:px-16 lg:py-14 transition-all duration-700',
           mounted ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-6'
         )}
       >
@@ -99,8 +102,7 @@ export function LoginPage() {
             Una plataforma que conecta a la empresa constructora, el fideicomiso, la municipalidad y los vecinos en un único registro de confianza.
           </p>
 
-          {/* Stats */}
-          <div className="flex gap-6 mt-8">
+          <div className="flex gap-8 mt-8">
             {stats.map(s => (
               <div key={s.label}>
                 <p className="text-2xl font-bold text-white">{s.value}</p>
@@ -132,120 +134,151 @@ export function LoginPage() {
           ))}
         </div>
 
-        <p className="text-blue-400/50 text-xs mt-8 lg:mt-0">
+        <p className="text-blue-400/40 text-xs mt-8 lg:mt-0">
           Municipalidad de Monte Cristo · CECSA · Fideicomiso MCO · Córdoba, Argentina
         </p>
       </div>
 
-      {/* ── Right panel — login form ── */}
-      <div className="lg:w-2/5 flex items-center justify-center px-6 py-10 lg:py-0">
-        <div
-          className={cn(
-            'w-full max-w-sm transition-all duration-700',
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          )}
-          style={{ transitionDelay: '150ms' }}
-        >
-          <div className="bg-white/5 border border-white/10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
+      {/* ── RIGHT — warm off-white / light slate ── */}
+      <div
+        className={cn(
+          'lg:w-2/5 bg-slate-50 flex flex-col items-center justify-center px-8 py-12 lg:py-0 transition-all duration-700',
+          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
+        )}
+        style={{ transitionDelay: '150ms' }}
+      >
+        {/* Top label on mobile */}
+        <div className="lg:hidden mb-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#1B3A5C]/10 rounded-full">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+            <span className="text-[#1B3A5C] text-xs font-medium">Monte Cristo, Córdoba</span>
+          </div>
+        </div>
 
-            <h2 className="text-white font-bold text-xl mb-1">Ingresar a TrustGas</h2>
-            <p className="text-blue-300 text-sm mb-7">Accedé con tus credenciales o tu identidad digital.</p>
+        <div className="w-full max-w-sm">
+          <h2 className="text-[#1B3A5C] font-bold text-2xl mb-1">Ingresar a TrustGas</h2>
+          <p className="text-slate-500 text-sm mb-8">Accedé con tus credenciales o tu identidad digital.</p>
 
-            {/* CIDI button */}
-            <button
-              onClick={handleCidi}
-              disabled={cidiLoading || loading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white text-sm font-medium hover:bg-white/15 transition-all mb-2 disabled:opacity-60 group"
-            >
-              {cidiLoading ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
-              ) : (
-                <CidiLogo />
-              )}
-              <span>{cidiLoading ? 'Conectando con CIDI…' : 'Ingresar con CIDI Córdoba'}</span>
-              {!cidiLoading && <ArrowRight className="w-3.5 h-3.5 ml-auto opacity-0 group-hover:opacity-100 transition-opacity" />}
-            </button>
-            <p className="text-center text-[10px] text-blue-400/60 mb-5">
-              Integración propuesta — identidad digital provincial
-            </p>
+          {/* CIDI button */}
+          <button
+            onClick={handleCidi}
+            disabled={cidiLoading || loading}
+            className="w-full flex items-center gap-3 px-4 py-3 bg-white border-2 border-slate-200 rounded-xl text-slate-700 text-sm font-semibold hover:border-[#2E75B6] hover:shadow-md transition-all mb-2 disabled:opacity-60 group shadow-sm"
+          >
+            {cidiLoading ? (
+              <Loader2 className="w-5 h-5 animate-spin text-[#2E75B6] shrink-0" />
+            ) : (
+              <CidiLogoImg />
+            )}
+            <span className="flex-1 text-left">
+              {cidiLoading ? 'Conectando con CIDI…' : 'Ingresar con CIDI Córdoba'}
+            </span>
+            {!cidiLoading && (
+              <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-[#2E75B6] transition-colors" />
+            )}
+          </button>
+          <p className="text-center text-[11px] text-slate-400 mb-6">
+            Integración propuesta — identidad digital provincial de Córdoba
+          </p>
 
-            {/* Divider */}
-            <div className="flex items-center gap-3 mb-5">
-              <div className="flex-1 h-px bg-white/10" />
-              <span className="text-blue-400 text-xs">o ingresá con usuario</span>
-              <div className="flex-1 h-px bg-white/10" />
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px bg-slate-200" />
+            <span className="text-slate-400 text-xs">o ingresá con usuario</span>
+            <div className="flex-1 h-px bg-slate-200" />
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="text-slate-600 text-xs font-semibold block mb-1.5 uppercase tracking-wide">
+                Correo electrónico
+              </label>
+              <input
+                type="text"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                placeholder="usuario@ejemplo.com"
+                className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm placeholder:text-slate-400 focus:outline-none focus:border-[#2E75B6] focus:ring-2 focus:ring-[#2E75B6]/20 transition-all shadow-sm"
+              />
+            </div>
+            <div>
+              <label className="text-slate-600 text-xs font-semibold block mb-1.5 uppercase tracking-wide">
+                Contraseña
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  placeholder="••••••••"
+                  className="w-full bg-white border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 text-sm placeholder:text-slate-400 focus:outline-none focus:border-[#2E75B6] focus:ring-2 focus:ring-[#2E75B6]/20 transition-all shadow-sm pr-10"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
+              </div>
             </div>
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="text-blue-200 text-xs font-medium block mb-1.5">
-                  Correo electrónico
-                </label>
-                <input
-                  type="text"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="usuario@ejemplo.com"
-                  className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-blue-400/50 focus:outline-none focus:border-[#2E75B6] focus:ring-2 focus:ring-[#2E75B6]/30 transition-all"
-                />
-              </div>
-              <div>
-                <label className="text-blue-200 text-xs font-medium block mb-1.5">
-                  Contraseña
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? 'text' : 'password'}
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="••••••••"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-2.5 text-white text-sm placeholder:text-blue-400/50 focus:outline-none focus:border-[#2E75B6] focus:ring-2 focus:ring-[#2E75B6]/30 transition-all pr-10"
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(v => !v)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-blue-400 hover:text-white transition-colors"
-                  >
-                    {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </button>
-                </div>
-              </div>
+            {error && (
+              <p className="text-red-600 text-xs bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+                {error}
+              </p>
+            )}
 
-              {error && (
-                <p className="text-red-400 text-xs bg-red-500/10 border border-red-500/20 rounded-lg px-3 py-2">
-                  {error}
-                </p>
+            <button
+              type="submit"
+              disabled={loading || cidiLoading}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#1B3A5C] rounded-xl text-white text-sm font-bold hover:bg-[#2E75B6] transition-all disabled:opacity-60 shadow-lg shadow-[#1B3A5C]/20 mt-1"
+            >
+              {loading ? (
+                <><Loader2 className="w-4 h-4 animate-spin" /> Ingresando…</>
+              ) : (
+                <>Ingresar <ArrowRight className="w-4 h-4" /></>
               )}
+            </button>
+          </form>
 
-              <button
-                type="submit"
-                disabled={loading || cidiLoading}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#2E75B6] rounded-xl text-white text-sm font-semibold hover:bg-[#1B3A5C] transition-all disabled:opacity-60 shadow-lg shadow-blue-900/40 mt-2"
-              >
-                {loading ? (
-                  <><Loader2 className="w-4 h-4 animate-spin" /> Ingresando…</>
-                ) : (
-                  <>Ingresar <ArrowRight className="w-4 h-4" /></>
-                )}
-              </button>
-            </form>
+          <p className="text-center text-slate-400 text-[11px] mt-6">
+            Demo PoC · Cualquier credencial es válida
+          </p>
+        </div>
 
-            <p className="text-center text-blue-400/50 text-[10px] mt-6">
-              Demo PoC · Cualquier credencial es válida
-            </p>
+        {/* Bottom branding on right panel */}
+        <div className="hidden lg:flex items-center gap-2 mt-12 text-slate-400 text-xs">
+          <div className="w-5 h-5 bg-[#1B3A5C] rounded flex items-center justify-center">
+            <Flame className="w-3 h-3 text-white" />
           </div>
+          TrustGas · Monte Cristo, Córdoba
         </div>
       </div>
     </div>
   )
 }
 
-function CidiLogo() {
+function CidiLogoImg() {
+  const [hasError, setHasError] = useState(false)
+
+  if (hasError) return <CidiPlaceholder />
+
   return (
-    <svg width="20" height="20" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="40" height="40" rx="8" fill="#1565C0" />
-      <path d="M20 8C13.373 8 8 13.373 8 20C8 26.627 13.373 32 20 32C26.627 32 32 26.627 32 20C32 13.373 26.627 8 20 8ZM20 14C21.657 14 23 15.343 23 17C23 18.657 21.657 20 20 20C18.343 20 17 18.657 17 17C17 15.343 18.343 14 20 14ZM20 29C17 29 14.33 27.54 12.67 25.28C12.71 22.56 18 21.07 20 21.07C21.99 21.07 27.29 22.56 27.33 25.28C25.67 27.54 23 29 20 29Z" fill="white" />
-    </svg>
+    <img
+      src={CIDI_LOGO_PATH}
+      alt="CIDI Córdoba"
+      className="w-6 h-6 object-contain shrink-0"
+      onError={() => setHasError(true)}
+    />
+  )
+}
+
+function CidiPlaceholder() {
+  return (
+    <div className="w-6 h-6 rounded-full bg-gradient-to-br from-[#2E86C1] to-[#D4AC0D] shrink-0 flex items-center justify-center">
+      <span className="text-white text-[9px] font-bold">CI</span>
+    </div>
   )
 }
